@@ -112,7 +112,7 @@ main() {
     fi
 
     # Download URL
-    DOWNLOAD_URL="https://github.com/${REPO_SLUG}/releases/download/${VERSION}/${BINARY_NAME}-${PLATFORM}"
+    DOWNLOAD_URL="https://github.com/${REPO_SLUG}/releases/download/${VERSION}/${BINARY_NAME}_${PLATFORM}"
 
     info "Downloading from: ${DOWNLOAD_URL}"
 
