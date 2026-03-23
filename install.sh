@@ -67,7 +67,7 @@ detect_platform() {
             ;;
     esac
 
-    echo "$OS-$ARCH"
+    echo "${OS}_${ARCH}"
 }
 
 # Get latest version from GitHub API
