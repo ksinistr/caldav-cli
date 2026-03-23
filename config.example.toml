@@ -1,0 +1,3 @@
+server_url = "https://baikal.example.com/dav.php/"
+username = "alice"
+insecure_skip_verify = false

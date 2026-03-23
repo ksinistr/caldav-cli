@@ -1,0 +1,45 @@
+name: release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+
+      - uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff
+        with:
+          go-version-file: go.mod
+
+      - name: Build release artifacts
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          while read -r os arch; do
+            [ -n "${os}" ] || continue
+            output="dist/caldav-cli_${os}_${arch}"
+            GOOS="${os}" GOARCH="${arch}" CGO_ENABLED=0 go build -trimpath -o "${output}" ./cmd/caldav
+          done <<'EOF'
+          linux amd64
+          linux arm64
+          darwin amd64
+          darwin arm64
+          EOF
+          (
+            cd dist
+            sha256sum caldav-cli_* > checksums.txt
+          )
+
+      - name: Publish release
+        uses: softprops/action-gh-release@a06a81a03ee405af7f2048a818ed3f03bbf83c7b
+        with:
+          files: |
+            dist/caldav-cli_*
+            dist/checksums.txt
